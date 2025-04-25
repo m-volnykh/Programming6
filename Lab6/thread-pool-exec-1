@@ -1,0 +1,20 @@
+import concurrent.futures as ftres
+
+from functools import partial
+
+def identity(x):
+    return x+1
+
+
+def foo():
+    n_jobs = 2 
+    executor = ftres.ThreadPoolExecutor(max_workers=n_jobs)
+    # future_result = executor.submit(identity,10)
+    spawn = partial(executor.submit, identity, x=10)
+
+    fs = [spawn() for i in range(n_jobs)]
+
+    print (sum(f.result() for f in ftres.as_completed(fs)))
+    
+    
+foo()
